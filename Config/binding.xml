@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<devices>
+<device id="HW_F0001" type="SENSOR" bind="F0001" >POINT1</device>
+<device id="HW_F0002" type="SENSOR" bind="F0002" >POINT2</device>
+</devices>
