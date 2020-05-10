@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   					   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	   					    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	<context:component-scan base-package="com.smp.SmartPotCore" />
+	<!-- @Autowired -->
+    <!-- DataSource ds -->
+    <bean id="dataSourceBean" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/smartpot"/>
+		<property name="username" value="smartpot"/>
+		<property name="password" value="smartpot123"/>
+	</bean>
+	<!-- hibernate session factory details -->
+	<bean id="beanBasedSessionFactory"	class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceBean" />
+		<property name="hibernateProperties" ref="hibernateProperties" />
+		<property name="packagesToScan" value="com.smp.SmartPotCore.datamodel" />
+	</bean>
+	<!-- hibernate configuration -->
+	<bean class="org.springframework.beans.factory.config.PropertiesFactoryBean" id="hibernateProperties">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.connection.autocommit">false</prop>
+			</props>
+		</property>		
+	</bean>
+	<!-- Digester details for Password encryption -->
+	<bean id="stringDigester" class="org.jasypt.digest.PooledStringDigester">
+   		<property name="poolSize" value="2"/>
+   	 	<property name="algorithm" value="SHA-256"/>
+    	<property name="iterations" value="100"/>
+    	<property name="saltGenerator">
+     		 <bean class="org.jasypt.salt.RandomSaltGenerator"/>
+   		</property>
+    	<property name="saltSizeBytes" value="16"/>
+    </bean>
+    <bean class="com.smp.SmartPotCore.service.dao.impl.SmartUserHibernateDao" id="SmartUserHibernateDao">
+	</bean>
+    <bean class="com.smp.SmartPotCore.service.dao.impl.PotHibernateDao" id="PotHibernateDao">
+	</bean>		
+	 <bean class="com.smp.SmartPotCore.service.dao.impl.parameterHibernateDAO" id="parameterHibernateDAO">
+	</bean>	      
+</beans>
